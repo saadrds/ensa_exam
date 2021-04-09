@@ -118,8 +118,8 @@
 
 <!-- footer -->
   <div class="footer bg-white">
-        <p class="m-0">Copyright 2020 © Bayo | All rights reserved </p>
-        <p class="m-0">Created by BAYOUSSEF Yassine</p>
+        <p class="m-0">Copyright 2020 ©ENSAS | All rights reserved </p>
+        <p class="m-0"></p>
     </div>
 </div>
 

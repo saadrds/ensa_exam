@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 use App\Http\Controllers\ProfController;
+use App\Http\Controllers\ModuleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,8 @@ Route::get('/', function () {
 Route::get('/hello', function () {
     return [0,1,3];
 });
+
+Route::get('/createModule',[ModuleController::class,'Create']);
 Route::get('/prof',[ProfController::class, 'Index']);
 Route::post('/prof',[ProfController::class, 'Store']);
 Route::get('/home', function () {
