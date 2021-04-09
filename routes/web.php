@@ -24,11 +24,9 @@ Route::get('/hello', function () {
 });
 
 Route::get('/createModule',[ModuleController::class,'Create']);
-Route::get('/prof',[ProfController::class, 'Index']);
-Route::post('/prof',[ProfController::class, 'Store']);
+Route::get('/listeProf',[ProfController::class, 'liste']);
+Route::get('/createProf',[ProfController::class, 'Index']);
+Route::post('/createProf',[ProfController::class, 'Store']);
 Route::get('/home', function () {
     return view('home');
 });
-//get
-//post
-//store

@@ -23,7 +23,6 @@ class ModuleController extends Controller
         $Module->ID_PROF = request('nom_respo');
         $Module->ID_SEMESTRE = request('semestre');
         $Module->save();
-
         $fil_cont_mod = new Filiere_contien_module();
         $fil_cont_mod->ID_FILIERE = request('nom_filiere');
         //mzl id dial module li ylh inserina
