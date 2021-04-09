@@ -8,7 +8,7 @@
 
         <h1 class="p-5">Ajouter Un Module</h1>
 
-<form action="" method='post'>
+<form action="Modules" method='post'>
     @csrf
       <div class="form-group">
         <label for="exampleInputEmail1">Nom  de module </label>
