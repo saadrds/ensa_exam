@@ -7,6 +7,7 @@ use App\Models\Filiere;
 use App\Models\Module;
 use App\Models\Prof;
 use App\Models\Filiere_contien_module;
+use DB;
 
 class ModuleController extends Controller
 {
@@ -18,6 +19,7 @@ class ModuleController extends Controller
 
     public function Index(){
         $filieres = Filiere::select('*')->groupBy('NOM_FILIERE')->get();
+        $filieres = Filiere::all();
         return view('Modules',["filieres"=>$filieres]);
     }
     public function Store(){
@@ -36,6 +38,7 @@ class ModuleController extends Controller
         $fil_cont_mod->ID_MODULE = $modules["ID_MODULE"];
         $fil_cont_mod->ID_FILIERE = $filieres["ID_FILIERE"];
         $fil_cont_mod->save();
+        return require("/Modules");
         //mzl id dial module li ylh inserina
     }
 
@@ -51,4 +54,26 @@ class ModuleController extends Controller
         return view('getAllProfs',["profs"=>$profs]);
 
     }
+
+    public function allModules(){
+        $modules = DB::table('Modules')
+        ->join('Filiere_contien_modules', 'Filiere_contien_modules.ID_MODULE', '=', 'Modules.ID_MODULE')
+        ->join('Profs', 'Profs.ID_PROF', '=', 'Modules.ID_PROF')
+        ->join('Filieres', 'Filieres.ID_FILIERE', '=', 'Filiere_contien_modules.ID_FILIERE')
+        ->where("Modules.ID_SEMESTRE","1")
+        ->where("Filieres.NOM_FILIERE",request("filiere"))
+        ->get();
+        return view('allModules',["modules"=>$modules]);
+    }
+    public function allModules2(){
+        $modules = DB::table('Modules')
+        ->join('Filiere_contien_modules', 'Filiere_contien_modules.ID_MODULE', '=', 'Modules.ID_MODULE')
+        ->join('Profs', 'Profs.ID_PROF', '=', 'Modules.ID_PROF')
+        ->join('Filieres', 'Filieres.ID_FILIERE', '=', 'Filiere_contien_modules.ID_FILIERE')
+        ->where("Modules.ID_SEMESTRE","1")
+        ->where("Filiere.NOM_FILIERE","Genie Informatique")
+        ->get();
+        return view('allModules',["modules"=>$modules]);
+    }
+    
 }

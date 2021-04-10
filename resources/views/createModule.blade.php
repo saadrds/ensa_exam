@@ -57,12 +57,16 @@
         $("#nom_filiere").change(function(e){
           //  alert(e.target.value);
           if(e.target.value  == "Cycle Préparatoire"){
+<<<<<<< HEAD
             $("#niveau").load("/cp");
+=======
+            $("#select_niveau").load("/cp");
+>>>>>>> df5a61a6a0dcbdd60eeb1ecf39adc8fbe7bc3aeb
           
         
         }
           else{
-            $("#niveau").load("/cycle");
+            $("#select_niveau").load("/cycle");
             
           }
         });
@@ -99,4 +103,8 @@
 
       })
     </script>
+<<<<<<< HEAD
     @endsection
+=======
+    @endsection
+>>>>>>> df5a61a6a0dcbdd60eeb1ecf39adc8fbe7bc3aeb
