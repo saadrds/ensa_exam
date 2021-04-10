@@ -19,7 +19,6 @@ class ModuleController extends Controller
 
     public function Index(){
         $filieres = Filiere::select('*')->groupBy('NOM_FILIERE')->get();
-        $filieres = Filiere::all();
         return view('Modules',["filieres"=>$filieres]);
     }
     public function Store(){
@@ -38,7 +37,7 @@ class ModuleController extends Controller
         $fil_cont_mod->ID_MODULE = $modules["ID_MODULE"];
         $fil_cont_mod->ID_FILIERE = $filieres["ID_FILIERE"];
         $fil_cont_mod->save();
-        return require("/Modules");
+        return redirect("/Modules");
         //mzl id dial module li ylh inserina
     }
 
