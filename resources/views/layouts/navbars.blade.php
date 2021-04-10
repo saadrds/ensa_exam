@@ -12,9 +12,9 @@
 <body>
  
 <!-- Vertical navbar -->
-<div class="vertical-nav bg-white" id="sidebar">
-  <div class="py-4 px-3 mb-4 bg-light">
-    <div class="media d-flex align-items-center">
+<div class="vertical-nav bg-white"  sty id="sidebar">
+  <div class="py-4 px-3 mb-4  " style="background-color:#aca3d1;">
+    <div class="media d-flex  align-items-center" >
       <img loading="lazy" src="{{ asset('img/admin.png') }}" alt="..." width="80" height="80" class="mr-3 rounded-circle img-thumbnail shadow-sm">
       <div class="media-body">
         <h4 class="m-0">Admin</h4>
@@ -46,8 +46,8 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">Liste Filiere</a>
-                <a class="dropdown-item" href="#">Ajouter Filiere</a>
+                <a class="dropdown-item" href="/listerFiliere">Liste Filiere</a>
+                <a class="dropdown-item" href="/createFiliere">Ajouter Filiere</a>
             </div>
         </div>
 
@@ -85,11 +85,11 @@
 
 
 <!-- Page content holder -->
-<div class="page-content" id="content">
+<div class="page-content thead-dark" id="content">
 
   <nav class="top-bar navbar navbar-light bg-light justify-content-between p-3">
       <!-- Toggle button -->
-      <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-circle shadow-sm"><i class="fa fa-bars"></i></button>
+      <button id="sidebarCollapse" type="button" class="btn btn-light thead-dark rounded-circle shadow-sm"><i class="fa fa-bars"></i></button>
       <h2>ENSA</h2>
       <form class="form-inline" action="" method="POST" >
        

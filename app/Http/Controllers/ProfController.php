@@ -16,7 +16,7 @@ class ProfController extends Controller
     public function liste(){
 
     $prof = DB::table('Profs')->join('Departements', 'Profs.ID_DEP', '=', 'Departements.ID_DEP')
-        ->select('Profs.*', 'Departements.*')->get();
+        ->select('Profs.*', 'Departements.*')->orderby('Departements.ID_DEP')->get();
 
         return view('ProfViewListe',["prof"=>$prof],);
     }

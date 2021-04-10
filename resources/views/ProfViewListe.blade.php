@@ -4,12 +4,11 @@
 
 <div class="m-5">
     <h1>Prof Page</h1>
-
+    
     <br>
     <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Id</th>
       <th scope="col">Nom</th>
       <th scope="col">Prenom</th>
       <th scope="col">Email</th>
@@ -20,7 +19,6 @@
   <tbody>
   @foreach($prof as $line)
     <tr>
-      <th scope="row">{{$line->ID_PROF}}</th>
       <td>{{$line->NOM_PROF}}</td>
       <td>{{$line->PRENOM_PROF}}</td>
       <td>{{$line->EMAIL}}</td>
