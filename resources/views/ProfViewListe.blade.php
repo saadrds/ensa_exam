@@ -4,7 +4,7 @@
 
 <div class="m-5">
     <h1>Prof Page</h1>
-
+    
     <br>
     <table class="table">
   <thead class="thead-dark">
