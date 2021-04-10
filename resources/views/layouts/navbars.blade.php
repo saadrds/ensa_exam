@@ -46,8 +46,8 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">Liste Filiere</a>
-                <a class="dropdown-item" href="#">Ajouter Filiere</a>
+                <a class="dropdown-item" href="/listerFiliere">Liste Filiere</a>
+                <a class="dropdown-item" href="/createFiliere">Ajouter Filiere</a>
             </div>
         </div>
 

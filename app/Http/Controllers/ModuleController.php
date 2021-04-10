@@ -11,13 +11,13 @@ use App\Models\Filiere_contien_module;
 class ModuleController extends Controller
 {
     public function Create(){
-        $filieres = Filiere::all();
+        $filieres = Filiere::select('*')->groupBy('NOM_FILIERE')->get();
         return view('createModule',["filieres"=>$filieres]);
 
     }
 
     public function Index(){
-        $filieres = Filiere::all();
+        $filieres = Filiere::select('*')->groupBy('NOM_FILIERE')->get();
         return view('Modules',["filieres"=>$filieres]);
     }
     public function Store(){

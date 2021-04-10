@@ -35,16 +35,13 @@
 						
 					</div>
 					<div>
-						<?php
-						if(isset($_GET['msg'])) 
-							echo '<br><div class="alert alert-danger" style="color:red;"> Username ou Password est incorrect ! </div>'; 
-						?>
+
 					</div>
 				</form>
 			</div>
 		</div>
 
-		<script src="../js/jquery-3.3.1.min.js"></script>
-		<script src="../js/main.js"></script>
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/main.js"></script>
 	</body>
 </html>
