@@ -41,3 +41,9 @@ Route::get('/getAllProfs',[ModuleController::class, 'getAllProfs2']);
 //get
 //post
 //store
+Route::get('/listeProf',[ProfController::class, 'liste']);
+Route::get('/createProf',[ProfController::class, 'Index']);
+Route::post('/createProf',[ProfController::class, 'Store']);
+Route::get('/home', function () {
+    return view('home');
+});

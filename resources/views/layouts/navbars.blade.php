@@ -15,7 +15,7 @@
 <div class="vertical-nav bg-white" id="sidebar">
   <div class="py-4 px-3 mb-4 bg-light">
     <div class="media d-flex align-items-center">
-      <img loading="lazy" src="{{ asset('img/pic.jpg') }}" alt="..." width="80" height="80" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+      <img loading="lazy" src="{{ asset('img/admin.png') }}" alt="..." width="80" height="80" class="mr-3 rounded-circle img-thumbnail shadow-sm">
       <div class="media-body">
         <h4 class="m-0">Admin</h4>
         <p class="font-weight-normal text-muted mb-0">Nom Admin</p>
@@ -34,8 +34,8 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">Liste Prof</a>
-                <a class="dropdown-item" href="#">Ajouter Prof</a>
+                <a class="dropdown-item" href="/listeProf">Liste Prof</a>
+                <a class="dropdown-item" href="/createProf">Ajouter Prof</a>
             </div>
         </div>
 
