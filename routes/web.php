@@ -38,6 +38,8 @@ Route::get('/home', function () {
 });
 Route::POST('/getAllProfs',[ModuleController::class, 'getAllProfs']);
 Route::get('/getAllProfs',[ModuleController::class, 'getAllProfs2']);
+Route::POST('/allModules',[ModuleController::class, 'allModules']);
+Route::get('/allModules',[ModuleController::class, 'allModules2']);
 //get
 //post
 //store

@@ -57,12 +57,12 @@
         $("#nom_filiere").change(function(e){
           //  alert(e.target.value);
           if(e.target.value  == "Cycle Préparatoire"){
-            $("#niveau").load("/cp");
+            $("#select_niveau").load("/cp");
           
         
         }
           else{
-            $("#niveau").load("/cycle");
+            $("#select_niveau").load("/cycle");
             
           }
         });
