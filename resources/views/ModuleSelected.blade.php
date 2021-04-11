@@ -32,6 +32,7 @@
 @endsection
 @section('script')
     <script>
+   
     var editUrl = "url({{ URL::asset('/img/edit.png') }})";
       $(document).ready(function(){
         $("#select_annee").change(function(e){
@@ -78,6 +79,10 @@
       
     });
 
-      */})
+      */
+     
+     })
     </script>
+    
+    
 @endsection

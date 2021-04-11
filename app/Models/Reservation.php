@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
+    public $primaryKey = 'ID_RESERV';
     public $timestamps = false;
     use HasFactory;
 }
