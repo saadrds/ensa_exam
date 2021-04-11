@@ -58,6 +58,11 @@ Route::get('/cycle', function() {
 
 Route::post('/exams',[ModuleController::class, 'Exams']);
 //Route::get('/exams',[ModuleController::class, 'Exams2']);
+Route::post('/saveExam',[ModuleController::class, 'saveExam']);
+Route::get('/saveExam',[ModuleController::class, 'saveExam2']);
+Route::get('/examsScript',function () {
+    return view('examScript');
+});
 
 
 

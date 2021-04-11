@@ -10,7 +10,7 @@ use App\Models\Filiere_contien_module;
 use App\Models\Annee;
 use App\Models\Exam;
 use App\Models\Reservation;
-
+use Illuminate\Support\Str;
 
 use DB;
 
@@ -112,5 +112,69 @@ class ModuleController extends Controller
             ->where('Exams.ID_MODULE',$id_module)->where("Exams.NOM_ANNEE",$annee)->where("Exams.TYPE","Rattrapage")->first();
         return view('exams',["DS1"=>$DS1, "DS2"=>$DS2, "RATT"=>$RATT]);
     }
+    public function saveExam(){
+        $annee = request("annee");
+        $id_module = request("idModule");
+        $typeDs = request("typeDS");
+        $date_exam = request("date_exam");
+        $debut_exam = request("debut_exam");
+        $fin_exam = request("fin_exam");
+        $empty = $empty = Str::contains(request("empty"), 'empty');
+        
+        $exam1 = Exam::where("ID_MODULE",$id_module)->where("NOM_ANNEE",$annee)->where("TYPE",$typeDs)->first();
+        if($exam1 == null){
+            $exam1 = new Exam();
+            $exam1->ID_MODULE = $id_module;
+            $exam1->TYPE = $typeDs;
+            $exam1->NOM_ANNEE = $annee;
+            $exam1->save();
+        }
+        $exam = Exam::where("ID_MODULE",$id_module)->where("NOM_ANNEE",$annee)->where("TYPE",$typeDs)->first();
+        $id_exam = $exam->ID_EXAM;
+        if($empty){
+            $reservation = new Reservation();
+            $reservation->DATE_RESERV = $date_exam;
+            $reservation->DEBUT_RESERV = $debut_exam;
+            $reservation->FIN_RESERV = $fin_exam;
+            $reservation->NOM_ANNEE = $annee;
+            $reservation->ID_EXAM = $id_exam;
+            $reservation->save();
+        }
+        else{
+            $reservation = Reservation::where("ID_EXAM",$id_exam)->where("NOM_ANNEE",$annee)->first();
+            $reservation->DATE_RESERV = $date_exam;
+            $reservation->DEBUT_RESERV = $debut_exam;
+            $reservation->FIN_RESERV = $fin_exam;
+            $reservation->save();
+        }
+
+        return view("clearView");
+
+        
+    }
+    public function saveExam2(){
+        $annee = "2021/2022";
+        $id_module = "19";
+        $typeDs = "DS1";
+        $date_exam = "2021-04-02";
+        $debut_exam ="23:30";
+        $fin_exam = "00:30";
+        $empty = Str::contains(request("empty"), 'empty');
+        
+        
+        $exam = Exam::where("ID_MODULE",$id_module)->where("NOM_ANNEE",$annee)->where("TYPE",$typeDs)->first();
+        $id_exam = $exam->ID_EXAM;
+        
+            $reservation = Reservation::where("ID_EXAM",$id_exam)->where("NOM_ANNEE",$annee)->first();
+            $reservation->DATE_RESERV = $date_exam;
+            $reservation->DEBUT_RESERV = $debut_exam;
+            $reservation->FIN_RESERV = $fin_exam;
+            $reservation->save();
+        
+
+        return view("clearView",["id"=>$id_exam]);
+
+        
+    }   
     
 }
