@@ -18,6 +18,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\FiliereController;
 
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -44,10 +45,17 @@ Route::get('/createFiliere',[FiliereController::class, 'Index']);
 Route::post('/createFiliere',[FiliereController::class, 'Store']);
 
 
+
+Route::get('/detailFiliere/{id}',[FiliereController::class, 'detail']);
+
+//Route::post('/ModifierFiliere',[FiliereController::class, 'modifetpost']);
+Route::get('/ModifierFiliere/{id}',[FiliereController::class, 'modifetget']);
+Route::post('/ModifierFiliere',[FiliereController::class, 'modifetpost']);
+
 Route::get('/home', function () {
     return view('home');
 });
-Route::POST('/getAllProfs',[ModuleController::class, 'getAllProfs']);
+Route::post('/getAllProfs',[ModuleController::class, 'getAllProfs']);
 Route::get('/getAllProfs',[ModuleController::class, 'getAllProfs2']);
 
 Route::POST('/allModules',[ModuleController::class, 'allModules']);
