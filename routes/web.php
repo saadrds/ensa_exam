@@ -16,11 +16,21 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\FiliereController;
+use App\Http\Controllers\CalandrierController;
 
 
-//login
+Route::post('/ExamenTable',[CalandrierController::class, 'walotraitemant']);
+Route::get('/ExamenTable',[CalandrierController::class, 'walotraitemant2']);
+
+
+
+
+
 Route::post('/login',[FiliereController::class, 'login']);
 Route::get('/login',[FiliereController::class, 'log']);
+
+Route::post('/Calandrier',[CalandrierController::class, 'getExams']);
+Route::get('/Calandrier',[CalandrierController::class, 'Calandrier']);
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,8 +70,7 @@ Route::post('/Modules',[ModuleController::class, 'Store']);
 Route::get('/Modules/{id}',[ModuleController::class, 'ModuleSelected']);
 
 
-//Route::post('/Filiere',[FiliereController::class, 'Store']);
-//filiere
+
 Route::get('/listerFiliere',[FiliereController::class, 'liste']);
 Route::get('/createFiliere',[FiliereController::class, 'Index']);
 Route::post('/createFiliere',[FiliereController::class, 'Store']);
@@ -70,7 +79,7 @@ Route::post('/createFiliere',[FiliereController::class, 'Store']);
 
 Route::get('/detailFiliere/{id}',[FiliereController::class, 'detail']);
 
-//Route::post('/ModifierFiliere',[FiliereController::class, 'modifetpost']);
+
 Route::get('/ModifierFiliere/{id}',[FiliereController::class, 'modifetget']);
 Route::post('/ModifierFiliere',[FiliereController::class, 'modifetpost']);
 

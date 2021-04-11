@@ -24,14 +24,16 @@ class FiliereController extends Controller
         $filieres = DB::table('Filieres')->where('ID_FILIERE', '=', $id)->first();
         return view('ModifierFiliere',["filieres"=>$filieres]);
     }
-    public function modifetpost(Request $req){
-        //$filieres = Filiere::where('ID_FILIERE', $req->ID_FILIERE)->first();
-        $fili = DB::table('Filieres')->where('ID_FILIERE', $req->ID_FILIERE)->first();
+    public function modifetpost(){
+        $filieress = Filiere::where('ID_FILIERE', request("id"))->first();
 
-        //$filieres->NOM_FILIERE = $req->NOM_FILIERE;
-        //$fili->CHEF_FILIERE = $req->CHEF_FILIERE;
-        //$filieres->save();
-        return redirect('/listerFiliere',["fili"=>$fili]);
+        $filieress->NOM_FILIERE = request("nom_filiere");
+        $filieress->CHEF_FILIERE = request("nom_respo");
+        $filieress->save();
+        
+        $filieres = Filiere::select('*')->groupBy('NOM_FILIERE')->get();
+
+        return redirect('/listerFiliere',["filieres"=>$filieres]);
     }
     
     public function Store(){
