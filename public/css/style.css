@@ -43,7 +43,7 @@ a {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background: url("../images/bg-registration-form-4.jpg") no-repeat;
+  background: url("/img/bg-registration-form-4.jpg") no-repeat;
   background-position: center;
   height: 100%;
   background-size: cover; 
