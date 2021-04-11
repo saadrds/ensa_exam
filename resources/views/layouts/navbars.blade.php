@@ -1,3 +1,6 @@
+@if(!session()->has('username')) 
+  <script>window.location = "/welcome";</script>
+@endif
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,11 +9,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/css/main.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
- 
 <!-- Vertical navbar -->
 <div class="vertical-nav bg-white"  sty id="sidebar">
   <div class="py-4 px-3 mb-4  " style="background-color:#aca3d1;">
@@ -91,8 +93,8 @@
       <!-- Toggle button -->
       <button id="sidebarCollapse" type="button" class="btn btn-light thead-dark rounded-circle shadow-sm"><i class="fa fa-bars"></i></button>
       <h2>ENSA</h2>
-      <form class="form-inline" action="" method="POST" >
-       
+      <form action="/welcome" method="POST" >
+       @csrf
         <button type="submit" class="btn btn-light bg-white rounded-pill shadow-sm px-4 font-weight-bold" name="logout"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button>
       </form>
   </nav>
@@ -128,7 +130,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="js/toggle.js"></script>
+<script src="/js/toggle.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 @yield('script')
 </body>

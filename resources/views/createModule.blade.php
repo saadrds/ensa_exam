@@ -7,6 +7,7 @@
 <div class="container">
 
         <h1 class="p-5">Ajouter Un Module</h1>
+        <p>{{Session::get("username")}}</p>
 
 <form action="Modules" method='post'>
     @csrf

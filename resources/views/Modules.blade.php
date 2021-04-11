@@ -29,9 +29,6 @@
         <option value="2">Semestre 2</option>
         </select>
       </div>
-      <div class="form-group mr-auto">
-        <button class="btn btn-success" id="afficher">Afficher</button>
-      </div>
   </div>
   <div id="liste_modules" class="mr-4">
     <table class="table">
@@ -41,7 +38,7 @@
       <th scope="col">Nom de Module</th>
       <th scope="col">Responsable</th>
       <th scope="col">Semesetre</th>
-
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody id="tbody">

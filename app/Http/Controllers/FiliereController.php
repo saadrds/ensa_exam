@@ -45,4 +45,22 @@ class FiliereController extends Controller
         $profs = Prof::where('NOM_PROF', 'like', $likee)->orWhere('PRENOM_PROF', 'like', $likee)->get();
         return view('getAllProfs',["profs"=>$profs]);
     }
+
+    public function login(){
+        $username = request("username");
+        $password = request("password");
+        if($username == "admin" && $password == "admin"){
+            session()->put("username",$username);
+            session()->put("password",$password);
+            //session()->regenerate();
+            return view("login");
+        }
+        else{
+            return view("welcome",["msg"=>"username or password incorrect !"]);
+        }
+    }
+    public function log(){
+        session()->regenerate();
+        return view("login");
+    }
 }
