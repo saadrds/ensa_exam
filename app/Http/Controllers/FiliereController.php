@@ -7,6 +7,7 @@ use App\Models\Filiere;
 use App\Models\Module;
 use App\Models\Prof;
 use App\Models\Filiere_contien_module;
+use DB;
 
 class FiliereController extends Controller
 {
@@ -18,6 +19,21 @@ class FiliereController extends Controller
     public function liste(){
         $filieres = Filiere::select('*')->groupBy('NOM_FILIERE')->get();
         return view('listerFiliere',["filieres"=>$filieres]);
+    }
+    public function modifetget($id){
+        $filieres = DB::table('Filieres')->where('ID_FILIERE', '=', $id)->first();
+        return view('ModifierFiliere',["filieres"=>$filieres]);
+    }
+    public function modifetpost(){
+        $filieress = Filiere::where('ID_FILIERE', request("id"))->first();
+
+        $filieress->NOM_FILIERE = request("nom_filiere");
+        $filieress->CHEF_FILIERE = request("nom_respo");
+        $filieress->save();
+
+        $filieres = Filiere::select('*')->groupBy('NOM_FILIERE')->get();
+
+        return view('/listerFiliere',["filieres"=>$filieres]);
     }
     
     public function Store(){
@@ -40,6 +56,10 @@ class FiliereController extends Controller
         return redirect('/listerFiliere');
     }
 
+    public function detail($id){
+        $filieres = DB::table('Filieres')->where('ID_FILIERE', '=', $id)->first();
+        return view('detailFiliere',["filieres"=>$filieres]);
+    }
     public function getAllProfs(){
         $likee = request('like')."%";
         $profs = Prof::where('NOM_PROF', 'like', $likee)->orWhere('PRENOM_PROF', 'like', $likee)->get();

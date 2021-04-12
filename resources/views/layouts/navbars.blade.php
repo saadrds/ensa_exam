@@ -71,13 +71,13 @@
     </li>
    
     <li class="nav-item">
-      <a href="#" class="nav-link text-dark">
+      <a href="pdf" class="nav-link text-dark">
                 <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
                 Statistiques
             </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link text-dark">
+      <a href="Calandrier" class="nav-link text-dark">
             <i class="fas fa-calendar-week mr-3 text-primary" ></i>
                 Calandrier
             </a>
@@ -121,11 +121,11 @@
 
 
 
-<!-- footer -->
+<!-- footer 
   <div class="footer bg-white">
         <p class="m-0">Copyright 2020 ©ENSAS | All rights reserved </p>
         <p class="m-0"></p>
-    </div>
+    </div>-->
 </div>
 
 

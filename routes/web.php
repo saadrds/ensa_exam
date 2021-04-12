@@ -16,16 +16,32 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\FiliereController;
-use App\Mail\ExamMail;
+use App\Http\Controllers\CalandrierController;
+use App\Http\Controllers\EmpController;
 
 
-Route::get('/email', function () {
-    Mail::to("saadrds@gmail.com")->send(new ExamMail());
-    return new ExamMail();
-});
-//login
+Route::post('/downloadPDFExams',[CalandrierController::class, 'downloadPDFex']);
+//Route::get('/downloadPDFExams',[CalandrierController::class, 'downloadPDFex']);
+
+
+Route::post('/ExamenTable',[CalandrierController::class, 'walotraitemant']);
+Route::get('/ExamenTable',[CalandrierController::class, 'walotraitemant2']);
+
+Route::get('/pdf',[EmpController::class, 'getDataToPDF']);
+Route::post('/pdfTable',[EmpController::class, 'generateData']);
+Route::get('/pdfTable',[EmpController::class, 'generateData2']);
+Route::get('/downloadPDF',[EmpController::class, 'downloadPDF']);
+
+
+
+Route::post('/localServ',[CalandrierController::class, 'walotraitemant3']);
+
+
 Route::post('/login',[FiliereController::class, 'login']);
 Route::get('/login',[FiliereController::class, 'log']);
+
+Route::post('/Calandrier',[CalandrierController::class, 'getExams']);
+Route::get('/Calandrier',[CalandrierController::class, 'Calandrier']);
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,12 +86,18 @@ Route::post('/Modules',[ModuleController::class, 'Store']);
 Route::get('/Modules/{id}',[ModuleController::class, 'ModuleSelected']);
 
 
-//Route::post('/Filiere',[FiliereController::class, 'Store']);
-//filiere
+
 Route::get('/listerFiliere',[FiliereController::class, 'liste']);
 Route::get('/createFiliere',[FiliereController::class, 'Index']);
 Route::post('/createFiliere',[FiliereController::class, 'Store']);
 
+
+
+Route::get('/detailFiliere/{id}',[FiliereController::class, 'detail']);
+
+
+Route::get('/ModifierFiliere/{id}',[FiliereController::class, 'modifetget']);
+Route::post('/ModifierFiliere',[FiliereController::class, 'modifetpost']);
 
 Route::get('/home', function () {
     return view('home');
