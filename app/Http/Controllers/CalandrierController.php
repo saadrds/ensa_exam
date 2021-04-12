@@ -44,8 +44,9 @@ class CalandrierController extends Controller
         ->groupBy('NOM_MODULE')
         ->select('*')
         ->get();
-        $pdf = PDF::loadView('ExamenTable',["calandriers"=>$calandriers]);
-        return $pdf->download('calandriers.pdf');
+        return view('ExamenTable',["calandriers"=>$calandriers]);
+
+        
         
     }
 
@@ -156,8 +157,8 @@ class CalandrierController extends Controller
         ->groupBy('NOM_MODULE')
         ->select('*')
         ->get();
-        
-        return view('ExamenTable',["calandriers"=>$calandriers]);
+        $pdf = PDF::loadView('ExamenTable',["calandriers"=>$calandriers]);
+        return $pdf->download('calandriers.pdf');
     }
     
 }
