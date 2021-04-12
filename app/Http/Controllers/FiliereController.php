@@ -30,10 +30,10 @@ class FiliereController extends Controller
         $filieress->NOM_FILIERE = request("nom_filiere");
         $filieress->CHEF_FILIERE = request("nom_respo");
         $filieress->save();
-        
+
         $filieres = Filiere::select('*')->groupBy('NOM_FILIERE')->get();
 
-        return redirect('/listerFiliere',["filieres"=>$filieres]);
+        return view('/listerFiliere',["filieres"=>$filieres]);
     }
     
     public function Store(){

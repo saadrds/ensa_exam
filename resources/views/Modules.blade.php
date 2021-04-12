@@ -78,7 +78,6 @@
           if($("#select_niveau").val() == null || $("#semestre").val() == null || $("#nom_filiere").val() == null){
           }
           else{
-            alert($("#nom_filiere").val());
             $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

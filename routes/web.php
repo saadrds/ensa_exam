@@ -17,13 +17,24 @@ use App\Http\Controllers\ProfController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\CalandrierController;
+use App\Http\Controllers\EmpController;
+
+
+Route::post('/downloadPDFExams',[CalandrierController::class, 'downloadPDFex']);
+//Route::get('/downloadPDFExams',[CalandrierController::class, 'downloadPDFex']);
 
 
 Route::post('/ExamenTable',[CalandrierController::class, 'walotraitemant']);
 Route::get('/ExamenTable',[CalandrierController::class, 'walotraitemant2']);
 
+Route::get('/pdf',[EmpController::class, 'getDataToPDF']);
+Route::post('/pdfTable',[EmpController::class, 'generateData']);
+Route::get('/pdfTable',[EmpController::class, 'generateData2']);
+Route::get('/downloadPDF',[EmpController::class, 'downloadPDF']);
 
 
+
+Route::post('/localServ',[CalandrierController::class, 'walotraitemant3']);
 
 
 Route::post('/login',[FiliereController::class, 'login']);

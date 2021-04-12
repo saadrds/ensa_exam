@@ -6,9 +6,12 @@
 @section('content')
 <div class="container">
   <h1 class="p-5">Liste des Modules</h1>
+  
+  <form action="downloadPDFExams" method="post">
+  @csrf
   <div class="d-flex align-items-start bd-highlight mb-3">
   <div class="form-group mr-auto">
-        <select type="text" class="form-control select" id="anee" name ="annee" aria-describedby="semestre">
+        <select type="text" class="form-control select" id="annee" name ="annee" aria-describedby="semestre">
         <option value="0" disabled selected>-- select Annee --</option>
         @foreach($annees as $line)
         <option>{{$line->NOM_ANNEE}}</option>
@@ -38,16 +41,20 @@
         </select>
       </div>
       <div class="form-group mr-auto">
-        <select type="text" class="form-control select" id="anee" name ="ds" aria-describedby="semestre">
+        <select type="text" class="form-control select" id="ds" name ="ds" aria-describedby="semestre">
         <option value="0" disabled selected>-- select type de DS --</option>
         <option value="DS1">DS 1</option>
         <option value="DS2">DS 2</option>
         <option value="Rattrapage">Rattrapage</option>
         </select>
       </div>
+      <div hidden id="pdfHidden"></div>
+      <button type="submit" id="submitpdf" class="btn btn-link">Generate PDF</button>
+      </form>
+      
       
       <div class="form-group mr-auto">
-      <button type="button" class="btn btn-primary" id="btncalandrier">Primary</button>
+      <button type="button" class="btn btn-primary" id="btncalandrier">Search</button>
       </div>
       
   </div>
@@ -56,59 +63,7 @@
 
 
  <!--       hna fin kayn tableau        -->
- <div class="WordSection1">
-
-<p class="MsoNormal">&nbsp;</p>
-
-<table class="MsoTable15Grid1LightAccent1" border="1" cellspacing="0" cellpadding="0" align="left" width="1087" style="width:815.3pt;border-collapse:collapse;
- border:none;margin-left:0pt;margin-right:4.8pt">
- <tbody><tr style="height:22.2pt">
-  <td width="60" style="width:44.7pt;border:solid #B4C6E7 1.0pt;border-bottom:
-  solid #8EAADB 1.5pt;background:#8EAADB;padding:0in 5.4pt 0in 5.4pt;
-  height:22.2pt">
-  <p class="MsoNormal" align="center" style="margin-bottom:0in;text-align:center;
-  line-height:normal"><b>Filière</span></b></p>
-  </td>
-  <td width="144" style="width:1.5in;border-top:solid #B4C6E7 1.0pt;border-left:
-  none;border-bottom:solid #8EAADB 1.5pt;border-right:solid #B4C6E7 1.0pt;
-  background:#8EAADB;padding:0in 5.4pt 0in 5.4pt;height:22.2pt">
-  <p class="MsoNormal" align="center" style="margin-bottom:0in;text-align:center;
-  line-height:normal"><b><span style="color:black">Responsable</span></b></p>
-  </td>
-  <td width="224" style="width:167.9pt;border-top:solid #B4C6E7 1.0pt;border-left:
-  none;border-bottom:solid #8EAADB 1.5pt;border-right:solid #B4C6E7 1.0pt;
-  background:#8EAADB;padding:0in 5.4pt 0in 5.4pt;height:22.2pt">
-  <p class="MsoNormal" align="center" style="margin-bottom:0in;text-align:center;
-  line-height:normal"><b><span style="color:black">Intitulé du module</span></b></p>
-  </td>
-  <td width="168" style="width:126.1pt;border-top:solid #B4C6E7 1.0pt;border-left:
-  none;border-bottom:solid #8EAADB 1.5pt;border-right:solid #B4C6E7 1.0pt;
-  background:#8EAADB;padding:0in 5.4pt 0in 5.4pt;height:22.2pt">
-  <p class="MsoNormal" align="center" style="margin-bottom:0in;text-align:center;
-  line-height:normal"><b><span style="color:black">Date de l’examen</span></b></p>
-  </td>
-  <td width="126" style="width:94.8pt;border-top:solid #B4C6E7 1.0pt;border-left:
-  none;border-bottom:solid #8EAADB 1.5pt;border-right:solid #B4C6E7 1.0pt;
-  background:#8EAADB;padding:0in 5.4pt 0in 5.4pt;height:22.2pt">
-  <p class="MsoNormal" align="center" style="margin-bottom:0in;text-align:center;
-  line-height:normal"><b><span style="color:black">Heure</span></b></p>
-  </td>
-  <td width="75" style="width:56.45pt;border-top:solid #B4C6E7 1.0pt;border-left:
-  none;border-bottom:solid #4472C4 1.0pt;border-right:solid #B4C6E7 1.0pt;
-  background:#8EAADB;padding:0in 5.4pt 0in 5.4pt;height:22.2pt">
-  <p class="MsoNormal" align="center" style="margin-bottom:0in;text-align:center;
-  line-height:normal"><b><span style="color:black">Local</span></b></p>
-  </td>
-  <td width="290" style="width:217.35pt;border-top:solid #B4C6E7 1.0pt;
-  border-left:none;border-bottom:solid #4472C4 1.0pt;border-right:solid #4472C4 1.0pt;
-  background:#8EAADB;padding:0in 5.4pt 0in 5.4pt;height:22.2pt">
-  <p class="MsoNormal" align="center" style="margin-bottom:0in;text-align:center;
-  line-height:normal"><b><span style="color:black">Surveillant</span></b></p>
-  </td>
- </tr>
- <tr></tr>
-
-</tbody></table>
+ 
 
 
 <div id="tablecalandrier" style="position:relative; top:-20px;"></div>
@@ -133,8 +88,14 @@
     @section('script')
     <script>
       $(document).ready(function(){
+        $('#submitpdf').click(function(){
+            $("#pdfHidden").load("/downloadPDFExams",{filiere : $("#nom_filiere").val(), niveau : $("#select_niveau").val(), semestre: $("#semestre").val(), annee: $("#annee").val(), ds: $("#ds").val()} );
+            //console.log({filiere : $("#nom_filiere").val(), niveau : $("#select_niveau").val(), semestre: $("#semestre").val(), annee: $("#annee").val(), ds: $("#ds").val()});
+        });
+
         $('#btncalandrier').click(function(){
             $("#tablecalandrier").load("/ExamenTable",{filiere : $("#nom_filiere").val(), niveau : $("#select_niveau").val(), semestre: $("#semestre").val(), annee: $("#annee").val(), ds: $("#ds").val()} );
+            //console.log({filiere : $("#nom_filiere").val(), niveau : $("#select_niveau").val(), semestre: $("#semestre").val(), annee: $("#annee").val(), ds: $("#ds").val()});
         });
 
         $("#nom_filiere").change(function(e){

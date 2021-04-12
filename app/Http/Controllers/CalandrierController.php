@@ -11,7 +11,7 @@ use App\Models\Annee;
 use App\Models\Exam;
 use App\Models\Reservation;
 
-
+use PDF;
 use DB;
 
 class CalandrierController extends Controller
@@ -37,18 +37,39 @@ class CalandrierController extends Controller
         ->join('Annees', 'Annees.ID_ANNEE', '=', 'Semestres.ID_ANNEE')
         ->join('Local_reservs', 'Local_reservs.ID_EXAM', '=', 'Exams.ID_EXAM')
         ->join('Reservations', 'Reservations.ID_RESERV', '=', 'Local_reservs.ID_RESERV')
-        ->join('Locals', 'Locals.ID_LOCAL_RESERV', '=', 'Local_reservs.ID_LOCAL_RESERV')
+        ->join('Locals', 'Locals.NOM_LOCAL', '=', 'Local_reservs.NOM_LOCAL')
         ->join('Filieres', 'Filieres.ID_FILIERE', '=', 'Filiere_contien_modules.ID_FILIERE')
         ->join('Departements', 'Profs.ID_DEP', '=', 'Departements.ID_DEP')
-        ->join('prof_surves', 'prof_surves.ID_LOCAL_RESERV', '=', 'Locals.ID_LOCAL_RESERV')
-        ->where("Filieres.NOM_FILIERE",$filiere)
-        ->where("Filieres.NIVEAU_FILIERE",$niveau)
-        ->where("Exams.NOM_ANNEE",$annee)
-        ->where("Semestres.ID_SEMESTRE",$semestre)
-        ->where("Exams.TYPE",$ds)
+        //->join('prof_surves', 'prof_surves.ID_LOCAL_RESERV', '=', 'Local_reservs.ID_LOCAL_RESERV')
+        ->groupBy('NOM_MODULE')
         ->select('*')
         ->get();
-        return view('ExamenTable',["calandriers"=>$calandriers]);
+        $pdf = PDF::loadView('ExamenTable',["calandriers"=>$calandriers]);
+        return $pdf->download('calandriers.pdf');
+        
+    }
+
+    public function walotraitemant3(){
+        $annee = request("annee");
+        $filiere = request("filiere");
+        $niveau = request("niveau");
+        $semestre = request("semestre");
+        $ds = request("ds");
+
+        $calandriers = DB::table('Modules')
+        ->join('Exams', 'Exams.ID_MODULE', '=', 'Modules.ID_MODULE')
+        ->join('Filiere_contien_modules', 'Filiere_contien_modules.ID_MODULE', '=', 'Modules.ID_MODULE')
+        ->join('Profs', 'Profs.ID_PROF', '=', 'Modules.ID_PROF')
+        ->join('Semestres', 'Semestres.ID_SEMESTRE', '=', 'Modules.ID_SEMESTRE')
+        ->join('Annees', 'Annees.ID_ANNEE', '=', 'Semestres.ID_ANNEE')
+        ->join('Local_reservs', 'Local_reservs.ID_EXAM', '=', 'Exams.ID_EXAM')
+        ->join('Reservations', 'Reservations.ID_RESERV', '=', 'Local_reservs.ID_RESERV')
+        ->join('Locals', 'Locals.NOM_LOCAL', '=', 'Local_reservs.NOM_LOCAL')
+        ->join('Filieres', 'Filieres.ID_FILIERE', '=', 'Filiere_contien_modules.ID_FILIERE')
+        ->join('Departements', 'Profs.ID_DEP', '=', 'Departements.ID_DEP')
+        ->join('prof_surves', 'prof_surves.ID_LOCAL_RESERV', '=', 'Local_reservs.ID_LOCAL_RESERV')
+        ->get();
+        return view('localServ',["calandriers"=>$calandriers]);
     }
 
     public function walotraitemant2(){
@@ -59,16 +80,17 @@ class CalandrierController extends Controller
         $ds = "DS1";
 
         $calandriers = DB::table('Modules')
-        ->join('Exams', 'Exams.ID_MODULE', '=', 'Modules.ID_MODULE')
+        ->join('Exams', 'Exames.ID_MODULE', '=', 'Modules.ID_MODULE')
         ->join('Filiere_contien_modules', 'Filiere_contien_modules.ID_MODULE', '=', 'Modules.ID_MODULE')
         ->join('Profs', 'Profs.ID_PROF', '=', 'Modules.ID_PROF')
         ->join('Semestres', 'Semestres.ID_SEMESTRE', '=', 'Modules.ID_SEMESTRE')
         ->join('Annees', 'Annees.ID_ANNEE', '=', 'Semestres.ID_ANNEE')
         ->join('Local_reservs', 'Local_reservs.ID_EXAM', '=', 'Exams.ID_EXAM')
         ->join('Reservations', 'Reservations.ID_RESERV', '=', 'Local_reservs.ID_RESERV')
-        ->join('Locals', 'Locals.ID_LOCAL_RESERV', '=', 'Local_reservs.ID_LOCAL_RESERV')
+        ->join('Locals', 'Locals.NOM_LOCAL', '=', 'Local_reservs.NOM_LOCAL')
         ->join('Filieres', 'Filieres.ID_FILIERE', '=', 'Filiere_contien_modules.ID_FILIERE')
         ->join('Departements', 'Profs.ID_DEP', '=', 'Departements.ID_DEP')
+        ->join('prof_surves', 'prof_surves.ID_LOCAL_RESERV', '=', 'Local_reservs.ID_LOCAL_RESERV')
         ->where("Filieres.NOM_FILIERE",$filiere)
         ->where("Filieres.NIVEAU_FILIERE",$niveau)
         ->where("Exams.NOM_ANNEE",$annee)
@@ -104,6 +126,38 @@ class CalandrierController extends Controller
         $fil_cont_mod->save();
         return redirect("/Modules");
      
+    }
+
+    public function downloadPDFex(){
+
+        $annee = request("annee");
+        $filiere = request("filiere");
+        $niveau = request("niveau");
+        $semestre = request("semestre");
+        $ds = request("ds");
+
+        $calandriers = DB::table('Modules')
+        ->join('Exams', 'Exams.ID_MODULE', '=', 'Modules.ID_MODULE')
+        ->join('Filiere_contien_modules', 'Filiere_contien_modules.ID_MODULE', '=', 'Modules.ID_MODULE')
+        ->join('Profs', 'Profs.ID_PROF', '=', 'Modules.ID_PROF')
+        ->join('Semestres', 'Semestres.ID_SEMESTRE', '=', 'Modules.ID_SEMESTRE')
+        ->join('Annees', 'Annees.ID_ANNEE', '=', 'Semestres.ID_ANNEE')
+        ->join('Local_reservs', 'Local_reservs.ID_EXAM', '=', 'Exams.ID_EXAM')
+        ->join('Reservations', 'Reservations.ID_RESERV', '=', 'Local_reservs.ID_RESERV')
+        ->join('Locals', 'Locals.NOM_LOCAL', '=', 'Local_reservs.NOM_LOCAL')
+        ->join('Filieres', 'Filieres.ID_FILIERE', '=', 'Filiere_contien_modules.ID_FILIERE')
+        ->join('Departements', 'Profs.ID_DEP', '=', 'Departements.ID_DEP')
+        //->join('prof_surves', 'prof_surves.ID_LOCAL_RESERV', '=', 'Local_reservs.ID_LOCAL_RESERV')
+        ->where("Filieres.NOM_FILIERE",$filiere)
+        ->where("Filieres.NIVEAU_FILIERE",$niveau)
+        ->where("Exams.NOM_ANNEE",$annee)
+        ->where("Semestres.ID_SEMESTRE",$semestre)
+        ->where("Exams.TYPE",$ds)
+        ->groupBy('NOM_MODULE')
+        ->select('*')
+        ->get();
+        
+        return view('ExamenTable',["calandriers"=>$calandriers]);
     }
     
 }

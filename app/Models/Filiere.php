@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Filiere extends Model
 {
-    public $primaryKey = 'ID_FILIERE';
     public $timestamps = false;
     public $primaryKey = 'ID_FILIERE';
     use HasFactory;
