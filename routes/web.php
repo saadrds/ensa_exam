@@ -16,8 +16,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\FiliereController;
+use App\Mail\ExamMail;
 
 
+Route::get('/email', function () {
+    Mail::to("saadrds@gmail.com")->send(new ExamMail());
+    return new ExamMail();
+});
 //login
 Route::post('/login',[FiliereController::class, 'login']);
 Route::get('/login',[FiliereController::class, 'log']);
@@ -76,7 +81,9 @@ Route::get('/home', function () {
     return view('home');
 });
 Route::POST('/getAllProfs',[ModuleController::class, 'getAllProfs']);
+Route::POST('/getAllProfs2',[ModuleController::class, 'getAllProfs2']);
 Route::get('/getAllProfs',[ModuleController::class, 'getAllProfs2']);
+Route::get('/getAllProfs2',[ModuleController::class, 'getAllProfs3']);
 
 Route::POST('/allModules',[ModuleController::class, 'allModules']);
 Route::get('/allModules',[ModuleController::class, 'allModules2']);
@@ -91,3 +98,12 @@ Route::post('/createProf',[ProfController::class, 'Store']);
 Route::get('/home', function () {
     return view('home');
 });
+
+
+//locals
+Route::post('/getLocals',[ModuleController::class, 'getLocals']);
+Route::get('/getLocals',[ModuleController::class, 'getLocals2']);
+
+Route::post('/saveSalle',[ModuleController::class, 'saveSalle']);
+Route::get('/saveSalle',[ModuleController::class, 'saveSalle2']);
+//Route::POST('/getLocals',[ModuleController::class, 'getLocals']);
