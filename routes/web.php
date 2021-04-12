@@ -23,6 +23,8 @@ use App\Http\Controllers\EmpController;
 Route::post('/downloadPDFExams',[CalandrierController::class, 'downloadPDFex']);
 //Route::get('/downloadPDFExams',[CalandrierController::class, 'downloadPDFex']);
 
+Route::get('/sendMail',[ProfController::class, 'sendMail']);
+
 
 Route::post('/ExamenTable',[CalandrierController::class, 'walotraitemant']);
 Route::get('/ExamenTable',[CalandrierController::class, 'walotraitemant2']);

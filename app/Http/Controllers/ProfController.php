@@ -9,6 +9,12 @@ use App\Models\Departement;
 class ProfController extends Controller
 {
     //
+    public function sendMail(){
+        
+        return view('sendMail');
+
+    }
+
     public function Index(){
         $departement = Departement::all();
         return view('ProfView',["departement"=>$departement]);
