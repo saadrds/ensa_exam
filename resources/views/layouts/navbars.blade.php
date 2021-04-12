@@ -71,7 +71,7 @@
     </li>
    
     <li class="nav-item">
-      <a href="#" class="nav-link text-dark">
+      <a href="pdf" class="nav-link text-dark">
                 <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
                 Statistiques
             </a>
