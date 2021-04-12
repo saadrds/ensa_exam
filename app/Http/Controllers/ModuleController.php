@@ -11,6 +11,11 @@ use App\Models\Annee;
 use App\Models\Exam;
 use App\Models\Reservation;
 use Illuminate\Support\Str;
+use App\Models\Local;
+use App\Models\Prof_surve;
+use App\Models\Local_reserv;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ExamMail;
 
 use DB;
 
@@ -49,15 +54,101 @@ class ModuleController extends Controller
     public function getAllProfs(){
         $likee = request('like')."%";
         $profs = Prof::where('NOM_PROF', 'like', $likee)->orWhere('PRENOM_PROF', 'like', $likee)->get();
+        if($likee === "%"){
+            return view('clearView');
+        }
+        else{
         return view('getAllProfs',["profs"=>$profs]);
+    }
 
     }
     public function getAllProfs2(){
-        $likee = "equest('like') "."T%";
-        $profs = Prof::where('NOM_PROF', 'like', $likee)->orWhere('PRENOM_PROF', 'like', $likee)->get();
-        return view('getAllProfs',["profs"=>$profs]);
+        $typeDS_local = request("typeDS_local");
+        $annee= request("annee");
+        $idModule = request("idModule");
+        $likee = request('like')."%";
+
+        $exam1 = Exam::where("ID_MODULE",$idModule)->where("NOM_ANNEE",$annee)->where("TYPE",$typeDS_local)->first();
+        $res1 = Reservation::where("ID_EXAM",$exam1->ID_EXAM)->first();
+        
+
+        $profResrve = DB::table('Reservations')
+    ->join('Local_reservs', 'Reservations.ID_RESERV', '=', 'Local_reservs.ID_RESERV')
+    ->join('prof_surves', 'prof_surves.ID_LOCAL_RESERV', '=', 'Local_reservs.ID_LOCAL_RESERV')
+    ->where('Reservations.ID_EXAM',$exam1->ID_EXAM)->Where('Reservations.FIN_RESERV','<', $res1->FIN_RESERV)->Where('Reservations.DEBUT_RESERV','>', $res1->DEBUT_RESERV)->get();
+        if($likee === "%"){
+            return view('clearView');
+        }
+
+        else{
+            if($profResrve == null)
+                return view('getAllProfs',["profs"=>$profs]);
+            else{
+            $array = array('foo' => 'bar');
+            $var = 0;
+            $i = 0;
+            if($profResrve != null){
+                foreach ($profs as $line) {
+                    $i = $i + 1;
+                    foreach ($profs as $col) {
+                        if($line->NOM_PROF == $col->NOM_PROF){
+                            $var = 1;
+                        }
+                }
+                if($var == 0){
+                    $array = array_add($array,$i, 'value'); 
+                }
+                return view('getAllProfs',["profs"=>$array,"profs_reserv"=> $profResrve]);
+            }
+            }
+    }
 
     }
+}
+
+public function getAllProfs3(){
+    $typeDS_local = "DS1";
+    $annee= "2021/2022";
+    $idModule = "20";
+    $likee = "%";
+
+    $exam1 = Exam::where("ID_MODULE",$idModule)->where("NOM_ANNEE",$annee)->where("TYPE",$typeDS_local)->first();
+    $res1 = Reservation::where("ID_EXAM",$exam1->ID_EXAM)->first();
+    
+
+    $profResrve = DB::table('Reservations')
+    ->join('Local_reservs', 'Reservations.ID_RESERV', '=', 'Local_reservs.ID_RESERV')
+    ->join('prof_surves', 'prof_surves.ID_LOCAL_RESERV', '=', 'Local_reservs.ID_LOCAL_RESERV')
+    ->where('Reservations.ID_EXAM',$exam1->ID_EXAM)->Where('Reservations.FIN_RESERV','<', $res1->FIN_RESERV)->Where('Reservations.DEBUT_RESERV','>', $res1->DEBUT_RESERV)->get();
+    if($likee === "%"){
+        return view('clearView');
+    }
+
+    else{
+        if($profResrve == null)
+                return view('getAllProfs',["profs"=>$profs]);
+            else{
+        $array = array('foo' => 'bar');
+        $var = 0;
+        $i = 0;
+        if($profResrve != null){
+            foreach ($profs as $line) {
+                $i = $i + 1;
+                foreach ($profs as $col) {
+                    if($line->NOM_PROF == $col->NOM_PROF){
+                        $var = 1;
+                    }
+            }
+            if($var == 0){
+                $array = array_add($array,$i, 'value'); 
+            }
+            return view('getAllProfs',["profs"=>$array,"profs_reserv"=> $profResrve]);
+        }
+        }
+}
+
+}
+}
 
     public function allModules(){
         $modules = DB::table('Modules')
@@ -99,7 +190,24 @@ class ModuleController extends Controller
             ->where('Exams.ID_MODULE',$id_module)->where("Exams.NOM_ANNEE",$annee)->where("Exams.TYPE","DS2")->first();
         $RATT = DB::table("Exams")->join('Reservations',"Exams.ID_EXAM","=","Reservations.ID_EXAM")
             ->where('Exams.ID_MODULE',$id_module)->where("Exams.NOM_ANNEE",$annee)->where("Exams.TYPE","Rattrapage")->first();
-        return view('exams',["DS1"=>$DS1, "DS2"=>$DS2, "RATT"=>$RATT]);
+
+        $EXAMDS1 = DB::table("Exams")->join('Reservations',"Exams.ID_EXAM","=","Reservations.ID_EXAM")
+        ->join("Local_reservs","Reservations.ID_RESERV","=","Local_reservs.ID_RESERV")
+        ->join("Prof_surves","Prof_surves.ID_LOCAL_RESERV","=","Local_reservs.ID_LOCAL_RESERV")
+        ->where('Exams.ID_MODULE',$id_module)->where("Exams.NOM_ANNEE",$annee)->where("Exams.TYPE","DS1")->get();
+
+        $EXAMDS2 = DB::table("Exams")->join('Reservations',"Exams.ID_EXAM","=","Reservations.ID_EXAM")
+        ->join("Local_reservs","Reservations.ID_RESERV","=","Local_reservs.ID_RESERV")
+        ->join("Prof_surves","Prof_surves.ID_LOCAL_RESERV","=","Local_reservs.ID_LOCAL_RESERV")
+        ->where('Exams.ID_MODULE',$id_module)->where("Exams.NOM_ANNEE",$annee)->where("Exams.TYPE","DS2")->get();
+
+        $EXAMRATT = DB::table("Exams")->join('Reservations',"Exams.ID_EXAM","=","Reservations.ID_EXAM")
+        ->join("Local_reservs","Reservations.ID_RESERV","=","Local_reservs.ID_RESERV")
+        ->join("Prof_surves","Prof_surves.ID_LOCAL_RESERV","=","Local_reservs.ID_LOCAL_RESERV")
+        ->where('Exams.ID_MODULE',$id_module)->where("Exams.NOM_ANNEE",$annee)->where("Exams.TYPE","RATT")->get();
+
+        return view('exams',["DS1"=>$DS1, "DS2"=>$DS2, "RATT"=>$RATT,"EXAMDS1"=>$EXAMDS1,"EXAMDS2"=>$EXAMDS2,"EXAMRATT"=>$EXAMRATT]);
+        
     }
     public function Exams2(){
         $annee = "2021/2022";
@@ -176,5 +284,103 @@ class ModuleController extends Controller
 
         
     }   
+
+    public function getLocals(){
+        
+        $locals = Local::all();
+        return view("getLocals",["locals"=>$locals]);
+    }
+    public function getLocals2(){
+        
+        $typeDS_local = request("typeDS_local");
+        $annee= request("annee");
+        $idModule = request("idModule");
+        $likee = request('like')."%";
+        $typeDS_local = "DS1";
+    $annee= "2021/2022";
+    $idModule = "20";
+    $likee = "%";
+
+        $exam1 = Exam::where("ID_MODULE",$idModule)->where("NOM_ANNEE",$annee)->where("TYPE",$typeDS_local)->first();
+        $res1 = Reservation::where("ID_EXAM",$exam1->ID_EXAM)->first();
+
+        $locals2 = DB::table('Local_reservs')
+        ->join('Reservations',"Reservations.ID_RESERV","=","Local_reservs.ID_RESERV")
+        ->where('Reservations.DATE_RESERV',"=",$res1->DATE_RESERV)
+        ->Where('Reservations.FIN_RESERV','<', $res1->FIN_RESERV)->orWhere('Reservations.DEBUT_RESERV','>', $res1->DEBUT_RESERV)->get();
+        $locals = Local::all();
+        $stack = [];
+        //array_push($stack, "apple", "raspberry");
+        if( count($locals2) != 0){
+        foreach ($locals as  $line) {
+            $i = 1;
+            foreach ($locals2 as  $col) {
+                if($line->NOM_LOCAL == $Line->NOM_LOCAL)
+                {
+                    $i = 0;
+                }
+                if($i == 1){
+                    array_push($stack,$line->NOM_LOCAL);
+                }
+            }
+        }
+        return view("getLocals",["locals"=>$stack]);}
+        else{
+            return view("getLocals",["locals"=>$locals]);
+        }
+    }
+
+
+    public function saveSalle(){
+        $id_res = request("id_res");
+        $local_selected = request("local_selected");
+        $liste_surv = request("liste_surv");
+
+
+        $reserv = Reservation::where("ID_RESERV",$id_res)->first();
+
+        $id_exam =  $reserv->ID_EXAM;
+
+        $local_res = new Local_reserv();
+        $local_res->ID_EXAM = $id_exam;
+        $local_res->ID_RESERV = $id_res;
+        $local_res->NOM_LOCAL = $local_selected;
+        $local_res->save();
+        foreach($liste_surv as $variable){
+            $prof = Prof::where("NOM_PROF",$variable)->first();
+            //Mail::to($prof->EMAIL)->send(new ExamMail());
+            $surv = new Prof_surve();
+            $surv->ID_LOCAL_RESRV = $local_res->ID_LOCAL_RESRV;
+            $surv->NOM_PROF = $variable;
+        }
+
+        return view("clearView");
+    }
+    public function saveSalle2(){
+        $id_res = 1;
+        $local_selected = "salle1";
+        $liste_surv = ["ammar"];
+
+
+        $reserv = Reservation::where("ID_RESERV",$id_res)->first();
+
+        $id_exam =  $reserv->ID_EXAM;
+
+        $local_res = new Local_reserv();
+        $local_res->ID_EXAM = $id_exam;
+        $local_res->ID_RESERV = $id_res;
+        $local_res->NOM_LOCAL = $local_selected;
+        $local_res->save();
+
+        $newR = Local_reserv::where("ID_EXAM",$id_exam)->where("ID_RESERV",$id_res)->where("NOM_LOCAL",$local_selected)->first();
+        foreach($liste_surv as $variable){
+            $surv = new Prof_surve();
+            $surv->ID_LOCAL_RESERV = $newR->ID_LOCAL_RESERV;
+            $surv->NOM_PROF = $variable;
+            $surv->save();
+        }
+
+        return view("clearView");
+    }
     
 }

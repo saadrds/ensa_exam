@@ -8,8 +8,7 @@
 <div class="container">
 <br><br>
      <h1>Welcome to ENSAS Examens Surveilllance</h1>
-     <p></p>
-     <p>{{Session::get("username")}}</p>
+     <p>You can add Exams on Modules navBar</p>
     </div>
 
 @endsection
